@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Level Up</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Level Up">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+:root {
+  color-scheme: dark;
+  --page: #000300;
+  --page-ink: #39ff7a;
+  --win: #03120a;
+  --win2: #000502;
+  --frame: #00ff66;
+  --frame-out: #00330f;
+  --ink: #d2ffe0;
+  --muted: #5fc584;
+  --well: #001a0b;
+  --gold: #39ff7a;
+  --gold-d: #00b84a;
+  --red: #ff2a4d;
+  --green: #39ff7a;
+  --c-fitness: #ff3b5c;
+  --c-study: #39ff7a;
+  --c-productivity: #c6ff3b;
+  --c-work: #00ffc8;
+  --c-sleep: #ff8fa3;
+  --px: 'Press Start 2P', 'Courier New', monospace;
+  --body: 'Share Tech Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #000300;
+    --page-ink: #39ff7a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #000300;
+  --page-ink: #39ff7a;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--page-ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--page); }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+svg.lucide { width: 18px; height: 18px; stroke-width: 2.25; flex: none; vertical-align: -3px; }
+
+#rain { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: .3; pointer-events: none; }
+main { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 10px 14px 120px; }
+.topbar h1 { text-shadow: 0 0 8px var(--page-ink); }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 6px 2px 2px; }
+.topbar h1 { font-family: var(--px); font-size: 13px; margin: 0; letter-spacing: .04em; }
+.topbar .date { font-size: 15px; opacity: .75; }
+
+.win {
+  position: relative;
+  background: linear-gradient(180deg, var(--win), var(--win2));
+  color: var(--ink);
+  border: 2px solid var(--frame);
+  border-radius: 4px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--frame) 40%, transparent), inset 0 0 22px color-mix(in srgb, var(--frame) 10%, transparent);
+  padding: 14px 14px 12px;
+  margin: 18px 3px;
+}
+.win h2 {
+  font-family: var(--px);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--gold);
+  margin: 0 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.win h2 .aside { margin-left: auto; font-family: var(--body); font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+p { margin: 6px 0; }
+
+.hero { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+.lv { font-family: var(--px); color: var(--gold); font-size: 46px; line-height: 1; text-shadow: 0 0 14px var(--gold), 0 0 3px var(--gold); text-align: center; min-width: 92px; }
+.lv small { display: block; font-size: 11px; color: var(--ink); text-shadow: none; margin-bottom: 8px; }
+.hero .title { font-family: var(--px); font-size: 10px; line-height: 1.6; margin-bottom: 8px; }
+
+.bar { height: 16px; background: var(--well); border: 2px solid var(--frame); border-radius: 2px; position: relative; overflow: hidden; }
+.bar > span { display: block; height: 100%; background: repeating-linear-gradient(90deg, var(--fill, var(--gold)) 0 9px, color-mix(in srgb, var(--fill, var(--gold)) 70%, #000) 9px 11px); transition: width .5s steps(8); }
+.bar.thin { height: 10px; }
+.meta { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; color: var(--muted); margin-top: 5px; }
+
+.week-num { font-family: var(--px); font-size: 22px; color: var(--ink); }
+.week-num small { font-family: var(--body); font-size: 15px; color: var(--muted); margin-left: 6px; }
+.track { position: relative; margin: 14px 0 26px; }
+.track .mark { position: absolute; top: -4px; width: 3px; height: 24px; background: var(--frame); transform: translateX(-1px); }
+.track .mark b { position: absolute; top: 27px; left: 50%; transform: translateX(-50%); font-weight: 400; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.track .mark.hit b { color: var(--gold); }
+
+.row { display: flex; align-items: center; gap: 10px; padding: 9px 2px; border-top: 2px dashed color-mix(in srgb, var(--frame) 22%, transparent); }
+.row:first-of-type { border-top: 0; }
+.row .grow { flex: 1; min-width: 0; }
+.row .name { overflow-wrap: anywhere; }
+.xp { font-family: var(--px); font-size: 10px; color: var(--gold); white-space: nowrap; }
+.xp.neg { color: var(--red); }
+.cat-dot { width: 26px; height: 26px; border-radius: 4px; display: grid; place-items: center; background: var(--well); color: var(--c, var(--ink)); border: 2px solid currentColor; flex: none; }
+.cat-dot svg.lucide { width: 15px; height: 15px; }
+
+.skill { display: grid; grid-template-columns: 26px 1fr auto; gap: 4px 10px; align-items: center; padding: 8px 0; }
+.skill .bar { grid-column: 2 / 4; }
+.skill .lvl { font-family: var(--px); font-size: 10px; }
+.flame { color: var(--gold); font-size: 14px; white-space: nowrap; }
+
+.taskbtn { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 8px; border-radius: 4px; cursor: pointer; }
+.taskbtn:hover, .taskbtn:focus-visible { background: color-mix(in srgb, var(--frame) 10%, transparent); }
+.taskbtn:focus-visible { outline: 3px solid var(--gold); }
+.taskbtn::before { content: "▶"; font-size: 11px; color: var(--gold); opacity: 0; width: 10px; }
+.taskbtn:hover::before, .taskbtn:focus-visible::before { opacity: 1; }
+.taskbtn.pop { animation: pop .35s steps(3); }
+@keyframes pop { 50% { background: color-mix(in srgb, var(--gold) 35%, transparent); } }
+.taskbtn .grow { flex: 1; }
+.quest-done .name { text-decoration: line-through; color: var(--muted); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 40px; padding: 7px 14px;
+  background: var(--well); color: var(--ink);
+  border: 2px solid var(--frame); border-radius: 4px;
+  box-shadow: 0 3px 0 var(--frame-out);
+  font-size: 16px;
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--frame-out); }
+.btn.gold { background: var(--gold); color: #001a07; border-color: #d2ffe0; box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 60%, transparent); }
+.btn.red { background: #2a0009; color: #ffd3db; border-color: var(--red); box-shadow: 0 0 12px color-mix(in srgb, var(--red) 55%, transparent); }
+.xp.neg, .cat-dot[style*="--red"] { text-shadow: 0 0 6px var(--red); }
+.btn.icon { min-width: 40px; padding: 7px; }
+.btn.ghost { background: transparent; box-shadow: none; border-color: transparent; color: var(--muted); }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+
+.form { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 10px; }
+.form.three { grid-template-columns: 1fr 1fr 84px; }
+.form .full { grid-column: 1 / -1; }
+input[type=text], input[type=number], select {
+  width: 100%; min-height: 42px; padding: 8px 10px;
+  background: var(--well); color: var(--ink);
+  border: 2px solid color-mix(in srgb, var(--frame) 55%, transparent); border-radius: 4px;
+  font-size: 16px;
+}
+input::placeholder { color: var(--muted); opacity: .8; }
+label.lab { display: block; font-size: 13px; color: var(--muted); margin-bottom: 3px; }
+
+.tag { font-size: 13px; padding: 1px 7px; border-radius: 3px; border: 1px solid currentColor; color: var(--c, var(--muted)); white-space: nowrap; }
+.tier-bronze { --c: #e3a46b; } .tier-silver { --c: #d8deef; } .tier-gold { --c: var(--gold); }
+
+.banner { display: flex; gap: 10px; align-items: center; }
+.banner .grow { flex: 1; }
+
+.day { font-family: var(--px); font-size: 9px; color: var(--muted); margin: 16px 0 4px; }
+.day:first-child { margin-top: 0; }
+.thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 3px; border: 2px solid var(--frame); cursor: pointer; display: block; }
+
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.badge { text-align: center; padding: 10px 6px; border: 2px solid color-mix(in srgb, var(--frame) 35%, transparent); border-radius: 4px; background: var(--well); }
+.badge .ico { color: var(--gold); margin-bottom: 4px; }
+.badge .ico svg.lucide { width: 26px; height: 26px; }
+.badge .bn { font-size: 14px; line-height: 1.2; }
+.badge .bd { font-size: 12px; color: var(--muted); line-height: 1.25; margin-top: 3px; }
+.badge.locked { opacity: .42; }
+.badge.locked .ico { color: var(--muted); }
+
+nav.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--win2);
+  border-top: 3px solid var(--frame);
+  box-shadow: 0 -4px 16px color-mix(in srgb, var(--frame) 30%, transparent);
+}
+nav.tabs .inner { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+nav.tabs button { all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 0 8px; color: var(--muted); font-size: 13px; position: relative; }
+nav.tabs button svg.lucide { width: 22px; height: 22px; }
+nav.tabs button[aria-current="page"] { color: var(--gold); }
+nav.tabs button[aria-current="page"]::before { content: "▼"; position: absolute; top: -2px; font-size: 9px; }
+nav.tabs button:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+
+.toasts { position: fixed; left: 0; right: 0; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; padding: 0 14px; }
+.toast { pointer-events: auto; max-width: 532px; width: 100%; margin: 0; display: flex; align-items: center; gap: 10px; padding: 10px 12px; animation: rise .2s steps(3); }
+.toast .grow { flex: 1; }
+@keyframes rise { from { transform: translateY(14px); opacity: 0; } }
+
+.overlay { position: fixed; inset: 0; z-index: 40; background: rgb(0 4 1 / .82); display: grid; place-items: center; padding: 24px; }
+.overlay .win { width: min(420px, 100%); margin: 0; }
+.levelup { text-align: center; padding: 26px 18px 20px; overflow: hidden; }
+.levelup .big { font-family: var(--px); font-size: 22px; color: var(--gold); text-shadow: 0 0 12px var(--gold); animation: blink .9s steps(2) 3; }
+.levelup .num { font-family: var(--px); font-size: 64px; margin: 22px 0 12px; text-shadow: 0 0 18px var(--gold), 0 0 4px var(--gold); animation: drop .6s steps(6); }
+.levelup p { color: var(--muted); }
+.spark { position: absolute; width: 6px; height: 6px; background: var(--gold); animation: spark 1.1s steps(6) forwards; }
+@keyframes blink { 50% { opacity: .2; } }
+@keyframes drop { from { transform: translateY(-60px) scale(1.6); opacity: 0; } }
+@keyframes spark { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+.photo-view img { width: 100%; max-height: 70vh; object-fit: contain; display: block; border-radius: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<canvas id="rain" aria-hidden="true"></canvas>
+<main id="app" aria-live="polite"></main>
+<nav class="tabs" aria-label="Screens"><div class="inner" id="tabs"></div></nav>
+<div class="toasts" id="toasts"></div>
+<input type="file" id="photoInput" accept="image/*" hidden>
+<input type="file" id="importInput" accept="application/json,.json" hidden>
+<script>
+/* Level Up — XP engine. Pure functions; no DOM, no storage. */
+(function (root) {
+  'use strict';
+
+  const CATS = [
+    { id: 'fitness', name: 'Fitness', icon: 'dumbbell' },
+    { id: 'study', name: 'Study', icon: 'book-open' },
+    { id: 'productivity', name: 'Productivity', icon: 'list-checks' },
+    { id: 'work', name: 'Work', icon: 'briefcase' },
+    { id: 'sleep', name: 'Sleep', icon: 'moon' }
+  ];
+
+  const TASKS = [
+    { id: 't-run', cat: 'fitness', name: '30-min run or cardio', xp: 40 },
+    { id: 't-lift', cat: 'fitness', name: 'Strength workout (45+ min)', xp: 50 },
+    { id: 't-steps', cat: 'fitness', name: '10k steps', xp: 20 },
+    { id: 't-stretch', cat: 'fitness', name: 'Stretching or mobility, 15 min', xp: 10 },
+    { id: 't-study1', cat: 'study', name: '1-hour focused study', xp: 30 },
+    { id: 't-study2', cat: 'study', name: '2-hour focused study', xp: 60 },
+    { id: 't-read', cat: 'study', name: 'Read 20 pages', xp: 15 },
+    { id: 't-bed', cat: 'productivity', name: 'Make bed', xp: 5 },
+    { id: 't-inbox', cat: 'productivity', name: 'Clear inbox', xp: 10 },
+    { id: 't-plan', cat: 'productivity', name: 'Plan tomorrow', xp: 10 },
+    { id: 't-clean', cat: 'productivity', name: 'Clean room', xp: 15 },
+    { id: 't-deep', cat: 'work', name: 'Deep work block (90 min)', xp: 45 },
+    { id: 't-ship', cat: 'work', name: 'Ship a deliverable', xp: 50 },
+    { id: 't-sleep9', cat: 'sleep', name: 'Slept 7–9 hours', xp: 30 },
+    { id: 't-sleep6', cat: 'sleep', name: 'Slept 6–7 hours', xp: 10 },
+    { id: 't-sleep0', cat: 'sleep', name: 'Slept under 6 hours', xp: 0 },
+    { id: 't-ontime', cat: 'sleep', name: 'In bed before target time', xp: 10 }
+  ];
+
+  const TIERS = [
+    { id: 'bronze', name: 'Bronze', xp: 800 },
+    { id: 'silver', name: 'Silver', xp: 1200 },
+    { id: 'gold', name: 'Gold', xp: 1700 }
+  ];
+
+  const SLIP_XP = 5;
+  const QUEST_BONUS = 50;
+  const STREAK_STEP = 0.05;
+  const STREAK_MAX_DAYS = 5; // 5 × 5% = +25%
+  const CUSTOM_MIN = 5, CUSTOM_MAX = 60;
+  const DAY = 86400000;
+
+  const pad = n => String(n).padStart(2, '0');
+
+  function xpForNext(level) { return Math.round(100 * Math.pow(level, 1.5)); }
+
+  function levelInfo(xp) {
+    let level = 1, rem = Math.max(0, xp);
+    while (rem >= xpForNext(level)) { rem -= xpForNext(level); level++; }
+    return { level, into: rem, need: xpForNext(level) };
+  }
+
+  function dayKey(ts) {
+    const d = new Date(ts);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+  function dayIndex(ts) {
+    const d = new Date(ts);
+    return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DAY);
+  }
+  function weekStart(ts) {
+    const d = new Date(ts);
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); // Monday
+    return d.getTime();
+  }
+  function weekKey(ts) { return dayKey(weekStart(ts)); }
+  function prevWeekKey(ts) { return weekKey(weekStart(ts) - DAY); }
+
+  function newState() {
+    return {
+      version: 1,
+      events: [],
+      customTasks: [],
+      habits: [],
+      rewards: [
+        { id: 'r1', tier: 'bronze', name: 'Favourite takeaway' },
+        { id: 'r2', tier: 'bronze', name: 'Film night' },
+        { id: 'r3', tier: 'silver', name: 'Dinner out' },
+        { id: 'r4', tier: 'silver', name: 'Drinks with friends' },
+        { id: 'r5', tier: 'gold', name: 'Big night out' },
+        { id: 'r6', tier: 'gold', name: 'Treat yourself to something' }
+      ],
+      quests: {},
+      achievements: {},
+      lastExport: 0,
+      seenLevel: 1
+    };
+  }
+
+  function allTasks(state) { return TASKS.concat(state.customTasks || []); }
+
+  function clampCustomXp(xp) {
+    const n = Math.round(Number(xp) || 0);
+    return Math.min(CUSTOM_MAX, Math.max(CUSTOM_MIN, n));
+  }
+
+  function runLength(set, fromDay) {
+    let n = 0;
+    while (set.has(fromDay - n)) n++;
+    return n;
+  }
+
+  /* Replays the event log into every derived number the app shows. */
+  function compute(state, now) {
+    now = now || Date.now();
+    const events = state.events.slice().sort((a, b) => a.ts - b.ts);
+    const taskDays = {};
+    CATS.forEach(c => { taskDays[c.id] = new Set(); });
+    const loggedByDay = {};
+    events.forEach(e => {
+      if (e.type !== 'task') return;
+      const di = dayIndex(e.ts);
+      if (taskDays[e.cat]) taskDays[e.cat].add(di);
+      const dk = dayKey(e.ts);
+      (loggedByDay[dk] = loggedByDay[dk] || new Set()).add(e.taskId);
+    });
+
+    // Quest bonuses become synthetic events at the moment the last quest task was logged.
+    const timeline = events.slice();
+    const questDone = {};
+    Object.keys(state.quests || {}).forEach(dk => {
+      const ids = state.quests[dk];
+      const logged = loggedByDay[dk];
+      if (!ids || !ids.length || !logged || !ids.every(id => logged.has(id))) return;
+      questDone[dk] = true;
+      const lastTs = Math.max.apply(null, events
+        .filter(e => e.type === 'task' && dayKey(e.ts) === dk && ids.indexOf(e.taskId) >= 0)
+        .map(e => e.ts));
+      timeline.push({ id: 'quest-' + dk, ts: lastTs + 0.5, type: 'quest', day: dk });
+    });
+    timeline.sort((a, b) => a.ts - b.ts);
+
+    let total = 0;
+    const catXp = {};
+    CATS.forEach(c => { catXp[c.id] = 0; });
+    const weekXp = {};
+    const earned = {};
+    let lastSlip = 0, firstTs = 0, photos = 0, claims = 0;
+
+    timeline.forEach(e => {
+      let x = 0;
+      if (e.type === 'task') {
+        const prior = runLength(taskDays[e.cat] || new Set(), dayIndex(e.ts) - 1);
+        const bonus = Math.min(prior, STREAK_MAX_DAYS) * STREAK_STEP;
+        x = Math.round((e.base || 0) * (1 + bonus));
+        if (!firstTs) firstTs = e.ts;
+        if (e.photoId) photos++;
+      } else if (e.type === 'slip') {
+        x = -SLIP_XP;
+        lastSlip = e.ts;
+        if (!firstTs) firstTs = e.ts;
+      } else if (e.type === 'quest') {
+        x = QUEST_BONUS;
+      } else if (e.type === 'claim') {
+        claims++;
+      }
+      earned[e.id] = x;
+      total = Math.max(0, total + x);
+      if (e.cat && catXp[e.cat] !== undefined) catXp[e.cat] = Math.max(0, catXp[e.cat] + x);
+      const wk = weekKey(e.ts);
+      weekXp[wk] = Math.max(0, (weekXp[wk] || 0) + x);
+    });
+
+    const today = dayIndex(now);
+    const cats = {};
+    let bestStreak = 0;
+    CATS.forEach(c => {
+      const set = taskDays[c.id];
+      let cur = runLength(set, today);
+      if (!cur) cur = runLength(set, today - 1);
+      let best = 0;
+      set.forEach(d => {
+        if (set.has(d - 1)) return;
+        let n = 0;
+        while (set.has(d + n)) n++;
+        best = Math.max(best, n);
+      });
+      bestStreak = Math.max(bestStreak, best);
+      cats[c.id] = Object.assign({ xp: catXp[c.id], streak: cur, best }, levelInfo(catXp[c.id]));
+    });
+
+    const wk = weekKey(now);
+    return Object.assign(levelInfo(total), {
+      total,
+      cats,
+      weekXp,
+      thisWeek: weekXp[wk] || 0,
+      lastWeek: weekXp[prevWeekKey(now)] || 0,
+      earned,
+      questDone,
+      bestStreak,
+      lastSlip,
+      firstTs,
+      photos,
+      claims
+    });
+  }
+
+  function tiersReached(xp) { return TIERS.filter(t => xp >= t.xp); }
+
+  function nextTier(xp) { return TIERS.find(t => xp < t.xp) || null; }
+
+  /* Rewards unlocked this week or last week (last week's expire at the end of this one). */
+  function claimable(state, comp, now) {
+    now = now || Date.now();
+    const out = [];
+    [[weekKey(now), comp.thisWeek], [prevWeekKey(now), comp.lastWeek]].forEach(([wk, xp]) => {
+      const reached = tiersReached(xp).map(t => t.id);
+      state.rewards.forEach(r => {
+        if (reached.indexOf(r.tier) < 0) return;
+        const done = state.events.some(e => e.type === 'claim' && e.rewardId === r.id && e.week === wk);
+        if (!done) out.push({ reward: r, week: wk, lastWeek: wk !== weekKey(now) });
+      });
+    });
+    return out;
+  }
+
+  /* Deterministic pick of three quest tasks for a day, spread across categories. */
+  function pickQuests(tasks, dk) {
+    let seed = 0;
+    for (let i = 0; i < dk.length; i++) seed = (seed * 31 + dk.charCodeAt(i)) >>> 0;
+    const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    const pool = tasks.filter(t => t.xp > 0).slice();
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    const picked = [], usedCats = new Set();
+    pool.forEach(t => { if (picked.length < 3 && !usedCats.has(t.cat)) { picked.push(t.id); usedCats.add(t.cat); } });
+    pool.forEach(t => { if (picked.length < 3 && picked.indexOf(t.id) < 0) picked.push(t.id); });
+    return picked;
+  }
+
+  function ensureQuests(state, now) {
+    const dk = dayKey(now || Date.now());
+    if (!state.quests[dk]) { state.quests[dk] = pickQuests(allTasks(state), dk); return true; }
+    return false;
+  }
+
+  const ACHIEVEMENTS = [
+    { id: 'first-log', name: 'First step', desc: 'Log your first task', icon: 'footprints', test: (c) => c.bestStreak >= 1 },
+    { id: 'streak-7', name: 'Week warrior', desc: 'Keep a 7-day streak in any category', icon: 'flame', test: (c) => c.bestStreak >= 7 },
+    { id: 'streak-30', name: 'Unbreakable', desc: 'Keep a 30-day streak in any category', icon: 'flame-kindling', test: (c) => c.bestStreak >= 30 },
+    { id: 'lv-5', name: 'Apprentice', desc: 'Reach level 5', icon: 'star', test: (c) => c.level >= 5 },
+    { id: 'lv-10', name: 'Journeyman', desc: 'Reach level 10', icon: 'medal', test: (c) => c.level >= 10 },
+    { id: 'lv-25', name: 'Master', desc: 'Reach level 25', icon: 'crown', test: (c) => c.level >= 25 },
+    { id: 'clean-30', name: 'Iron will', desc: '30 days without a slip', icon: 'shield-check',
+      test: (c, s, now) => s.habits.length > 0 && c.firstTs > 0 && now - Math.max(c.lastSlip, c.firstTs) >= 30 * DAY },
+    { id: 'quest', name: 'Questing', desc: 'Clear all three daily quests', icon: 'scroll', test: (c) => Object.keys(c.questDone).length > 0 },
+    { id: 'photo', name: 'Proof', desc: 'Attach a photo to a log', icon: 'camera', test: (c) => c.photos > 0 },
+    { id: 'reward', name: 'Earned it', desc: 'Claim your first reward', icon: 'gift', test: (c) => c.claims > 0 },
+    { id: 'gold', name: 'Golden week', desc: 'Reach the Gold tier in a week', icon: 'trophy',
+      test: (c) => Object.keys(c.weekXp).some(k => c.weekXp[k] >= TIERS[2].xp) }
+  ];
+
+  /* Records newly earned achievements; earned ones are kept even if events are undone. */
+  function checkAchievements(state, comp, now) {
+    now = now || Date.now();
+    const fresh = [];
+    ACHIEVEMENTS.forEach(a => {
+      if (!state.achievements[a.id] && a.test(comp, state, now)) { state.achievements[a.id] = now; fresh.push(a); }
+    });
+    return fresh;
+  }
+
+  function validateState(s) {
+    if (!s || typeof s !== 'object') return false;
+    if (!Array.isArray(s.events) || !Array.isArray(s.habits) || !Array.isArray(s.rewards)) return false;
+    if (!Array.isArray(s.customTasks) || typeof s.quests !== 'object' || s.quests === null) return false;
+    return s.events.every(e => e && typeof e.id === 'string' && typeof e.ts === 'number' &&
+      ['task', 'slip', 'claim'].indexOf(e.type) >= 0);
+  }
+
+  const api = {
+    CATS, TASKS, TIERS, ACHIEVEMENTS, SLIP_XP, QUEST_BONUS, CUSTOM_MIN, CUSTOM_MAX, DAY,
+    xpForNext, levelInfo, dayKey, dayIndex, weekStart, weekKey, prevWeekKey,
+    newState, allTasks, clampCustomXp, compute, tiersReached, nextTier, claimable,
+    pickQuests, ensureQuests, checkAchievements, validateState
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.Engine = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  const E = window.Engine;
+  const KEY = 'levelup.state', PREV = 'levelup.state.prev';
+  const VIEWS = [
+    { id: 'character', name: 'Character', icon: 'user' },
+    { id: 'log', name: 'Log', icon: 'swords' },
+    { id: 'habits', name: 'Habits', icon: 'shield-alert' },
+    { id: 'rewards', name: 'Rewards', icon: 'gift' },
+    { id: 'history', name: 'History', icon: 'scroll-text' }
+  ];
+  const catById = Object.fromEntries(E.CATS.map(c => [c.id, c]));
+  const app = document.getElementById('app');
+  let restoredFromSnapshot = false;
+  let state = load();
+  let comp = E.compute(state);
+  let view = 'character';
+  let historyLimit = 80;
+  const thumbs = new Map();
+
+  /* ---------- storage ---------- */
+  function hydrate(s) {
+    const base = E.newState();
+    const out = Object.assign(base, s);
+    out.seenSkill = out.seenSkill || {};
+    out.achievements = out.achievements || {};
+    return out;
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) { const s = JSON.parse(raw); if (E.validateState(s)) return hydrate(s); }
+    } catch (e) { /* fall through to snapshot */ }
+    try {
+      const raw = localStorage.getItem(PREV);
+      if (raw) { const s = JSON.parse(raw); if (E.validateState(s)) { restoredFromSnapshot = true; return hydrate(s); } }
+    } catch (e) { /* start fresh */ }
+    return hydrate({});
+  }
+  function save() {
+    try {
+      const cur = localStorage.getItem(KEY);
+      if (cur) localStorage.setItem(PREV, cur);
+      localStorage.setItem(KEY, JSON.stringify(state));
+    } catch (e) {
+      toast('Progress couldn’t be saved: this browser’s storage is full or blocked.');
+    }
+  }
+
+  let dbp = null;
+  function idb() {
+    if (dbp) return dbp;
+    dbp = new Promise((res, rej) => {
+      try {
+        const r = indexedDB.open('levelup', 1);
+        r.onupgradeneeded = () => r.result.createObjectStore('photos');
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      } catch (e) { rej(e); }
+    });
+    return dbp;
+  }
+  async function tx(mode, fn) {
+    const db = await idb();
+    return new Promise((res, rej) => {
+      const t = db.transaction('photos', mode);
+      const out = fn(t.objectStore('photos'));
+      t.oncomplete = () => res(out && 'result' in out ? out.result : undefined);
+      t.onerror = () => rej(t.error);
+    });
+  }
+  const photoPut = (id, blob) => tx('readwrite', s => s.put(blob, id));
+  const photoGet = id => tx('readonly', s => s.get(id));
+  const photoDel = id => tx('readwrite', s => s.delete(id));
+  const photoKeys = () => tx('readonly', s => s.getAllKeys());
+
+  /* ---------- helpers ---------- */
+  function h(tag, attrs, ...kids) {
+    const el = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      const v = attrs[k];
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k === 'style') el.style.cssText = v;
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? '' : v);
+    }
+    kids.flat(Infinity).forEach(c => { if (c == null || c === false) return; el.append(c.nodeType ? c : String(c)); });
+    return el;
+  }
+  const ic = name => h('i', { 'data-lucide': name, 'aria-hidden': 'true' });
+  const fmt = n => Math.round(n).toLocaleString();
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const catDot = cat => h('span', { class: 'cat-dot', style: cat ? `--c: var(--c-${cat})` : '' }, ic(cat ? catById[cat].icon : 'skull'));
+  const xpTag = n => h('span', { class: 'xp' + (n < 0 ? ' neg' : '') }, (n < 0 ? '−' : '+') + Math.abs(n) + ' XP');
+  function bar(frac, opts) {
+    opts = opts || {};
+    return h('div', { class: 'bar' + (opts.thin ? ' thin' : ''), role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.round(frac * 100), style: opts.color ? `--fill: ${opts.color}` : '' },
+      h('span', { style: `width: ${Math.max(0, Math.min(1, frac)) * 100}%` }));
+  }
+  function win(title, ...kids) {
+    return h('section', { class: 'win' }, title ? h('h2', null, title) : null, kids);
+  }
+  function dayLabel(dk) {
+    const today = E.dayKey(Date.now()), yest = E.dayKey(Date.now() - E.DAY);
+    if (dk === today) return 'Today';
+    if (dk === yest) return 'Yesterday';
+    const [y, m, d] = dk.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+  }
+  const timeLabel = ts => new Date(ts).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+
+  /* ---------- toasts, dialogs, celebration ---------- */
+  function toast(text, actions, ms) {
+    const box = document.getElementById('toasts');
+    const el = h('div', { class: 'win toast', role: 'status' }, h('div', { class: 'grow' }, text),
+      (actions || []).map(a => h('button', { class: 'btn', onclick: () => { el.remove(); a.fn(); } }, a.icon ? ic(a.icon) : null, a.label)));
+    box.append(el);
+    while (box.children.length > 2) box.firstChild.remove();
+    icons();
+    setTimeout(() => el.remove(), ms || (actions && actions.length ? 6500 : 3200));
+  }
+  function confirmBox(text, okLabel, danger) {
+    return new Promise(res => {
+      const close = v => { ov.remove(); res(v); };
+      const ov = h('div', { class: 'overlay', onclick: e => { if (e.target === ov) close(false); } },
+        h('div', { class: 'win', role: 'dialog', 'aria-modal': 'true' },
+          h('p', null, text),
+          h('div', { class: 'btns' },
+            h('button', { class: 'btn ' + (danger ? 'red' : 'gold'), onclick: () => close(true) }, okLabel),
+            h('button', { class: 'btn ghost', onclick: () => close(false) }, 'Cancel'))));
+      document.body.append(ov);
+      ov.querySelector('button').focus();
+    });
+  }
+  function chime() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const ctx = new AC();
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'square'; o.frequency.value = f;
+        const t0 = ctx.currentTime + i * 0.09;
+        g.gain.setValueAtTime(0.06, t0); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.22);
+        o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0 + 0.24);
+      });
+      setTimeout(() => ctx.close(), 900);
+    } catch (e) { /* sound is optional */ }
+  }
+  function levelUp(num, line) {
+    chime();
+    const card = h('div', { class: 'win levelup', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Level up' },
+      h('div', { class: 'big' }, 'Level up!'),
+      h('div', { class: 'num' }, num),
+      h('p', null, line),
+      h('button', { class: 'btn gold', onclick: () => ov.remove() }, 'Continue'));
+    for (let i = 0; i < 18; i++) {
+      const a = (i / 18) * Math.PI * 2, r = 120 + (i % 3) * 40;
+      card.append(h('span', { class: 'spark', style: `left:50%;top:45%;--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r}px` }));
+    }
+    const ov = h('div', { class: 'overlay', onclick: e => { if (e.target === ov) ov.remove(); } }, card);
+    document.body.append(ov);
+    card.querySelector('button').focus();
+  }
+  function celebrate() {
+    let shown = false;
+    if (comp.level > state.seenLevel) {
+      levelUp(comp.level, 'Character level ' + comp.level + '. Onwards, sir.');
+      shown = true;
+    }
+    state.seenLevel = comp.level;
+    const ups = [];
+    E.CATS.forEach(c => {
+      const now = comp.cats[c.id].level, seen = state.seenSkill[c.id] || 1;
+      if (now > seen) ups.push(c.name + ' reached level ' + now);
+      state.seenSkill[c.id] = now;
+    });
+    if (ups.length) {
+      if (shown) ups.forEach(u => toast(u + '.'));
+      else levelUp(comp.cats[E.CATS.find(c => ups[0].startsWith(c.name)).id].level, ups.join('. ') + '.');
+    }
+  }
+
+  /* ---------- state changes ---------- */
+  function commit(opts) {
+    E.ensureQuests(state, Date.now());
+    comp = E.compute(state);
+    if (!opts || !opts.quiet) celebrate();
+    else { state.seenLevel = Math.min(state.seenLevel, comp.level); E.CATS.forEach(c => { state.seenSkill[c.id] = Math.min(state.seenSkill[c.id] || 1, comp.cats[c.id].level); }); }
+    const fresh = E.checkAchievements(state, comp, Date.now());
+    save();
+    render();
+    fresh.forEach(a => toast(h('span', null, ic(a.icon), ' Achievement: ', h('b', null, a.name))));
+  }
+  function logTask(task, btn) {
+    if (btn) { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
+    const ev = { id: uid(), ts: Date.now(), type: 'task', taskId: task.id, name: task.name, cat: task.cat, base: task.xp };
+    state.events.push(ev);
+    commit();
+    const got = comp.earned[ev.id];
+    toast((got >= 0 ? '+' : '') + got + ' XP. ' + task.name,
+      [{ label: 'Photo', icon: 'camera', fn: () => pickPhoto(ev.id) }, { label: 'Undo', fn: () => undo(ev.id, true) }]);
+  }
+  function slip(habit) {
+    const ev = { id: uid(), ts: Date.now(), type: 'slip', habitId: habit.id, name: habit.name, cat: habit.cat || null };
+    state.events.push(ev);
+    commit();
+    toast('−5 XP. ' + habit.name + ' logged.', [{ label: 'Undo', fn: () => undo(ev.id, true) }]);
+  }
+  function claim(item) {
+    const r = item.reward;
+    state.events.push({ id: uid(), ts: Date.now(), type: 'claim', rewardId: r.id, name: r.name, tier: r.tier, week: item.week });
+    commit();
+    toast(h('span', null, ic('gift'), ' Claimed: ', h('b', null, r.name), '. Enjoy it, sir.'));
+  }
+  async function undo(id, skipConfirm) {
+    const ev = state.events.find(e => e.id === id);
+    if (!ev) return;
+    if (!skipConfirm && !(await confirmBox('Undo “' + ev.name + '”' + (ev.photoId ? ' and delete its photo' : '') + '?', 'Undo', true))) return;
+    state.events = state.events.filter(e => e.id !== id);
+    if (ev.photoId) { photoDel(ev.photoId).catch(() => {}); thumbs.delete(ev.photoId); }
+    commit({ quiet: true });
+    toast('Undone.');
+  }
+
+  /* ---------- photos ---------- */
+  let photoFor = null;
+  function pickPhoto(eventId) { photoFor = eventId; document.getElementById('photoInput').click(); }
+  async function compress(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
+      const scale = Math.min(1, 1080 / Math.max(img.naturalWidth, img.naturalHeight));
+      const w = Math.round(img.naturalWidth * scale), ht = Math.round(img.naturalHeight * scale);
+      const c = document.createElement('canvas');
+      c.width = w; c.height = ht;
+      c.getContext('2d').drawImage(img, 0, 0, w, ht);
+      return await new Promise(res => c.toBlob(res, 'image/jpeg', 0.8));
+    } finally { URL.revokeObjectURL(url); }
+  }
+  document.getElementById('photoInput').addEventListener('change', async e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    const ev = state.events.find(x => x.id === photoFor);
+    if (!file || !ev) return;
+    try {
+      const blob = await compress(file);
+      if (!blob) throw new Error('encode');
+      const pid = 'p-' + uid();
+      await photoPut(pid, blob);
+      if (ev.photoId) photoDel(ev.photoId).catch(() => {});
+      ev.photoId = pid;
+      commit({ quiet: true });
+      toast(h('span', null, ic('camera'), ' Photo added to “' + ev.name + '”.'));
+    } catch (err) {
+      toast('That photo couldn’t be saved. Try a different image, or free up space by exporting and clearing old photos.');
+    }
+  });
+  function thumb(ev) {
+    const img = h('img', { class: 'thumb', alt: 'Photo for ' + ev.name, onclick: () => viewPhoto(ev) });
+    const set = url => { img.src = url; };
+    if (thumbs.has(ev.photoId)) set(thumbs.get(ev.photoId));
+    else photoGet(ev.photoId).then(b => { if (b) { const u = URL.createObjectURL(b); thumbs.set(ev.photoId, u); set(u); } }).catch(() => {});
+    return img;
+  }
+  function viewPhoto(ev) {
+    const url = thumbs.get(ev.photoId);
+    if (!url) return;
+    const ov = h('div', { class: 'overlay', onclick: () => ov.remove() },
+      h('div', { class: 'win photo-view' }, h('img', { src: url, alt: 'Photo for ' + ev.name }),
+        h('p', { class: 'small muted' }, ev.name + ', ' + dayLabel(E.dayKey(ev.ts)) + ' at ' + timeLabel(ev.ts))));
+    document.body.append(ov);
+  }
+
+  /* ---------- backup ---------- */
+  const blobToDataURL = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); });
+  async function dataURLToBlob(u) { return (await fetch(u)).blob(); }
+  async function saveFile(filename, text) {
+    if (window.claude && typeof window.claude.use === 'function') {
+      try {
+        const dl = await window.claude.use('downloads');
+        if (dl) { await dl.save({ filename, data: text }); return true; }
+      } catch (e) {
+        if (e && e.code === 'declined') return false;
+      }
+    }
+    const a = h('a', { href: URL.createObjectURL(new Blob([text], { type: 'application/json' })), download: filename });
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    return true;
+  }
+  async function exportData(withPhotos) {
+    const out = { app: 'levelup', format: 1, exportedAt: new Date().toISOString(), state };
+    if (withPhotos) {
+      out.photos = {};
+      try {
+        for (const k of await photoKeys()) { const b = await photoGet(k); if (b) out.photos[k] = await blobToDataURL(b); }
+      } catch (e) { toast('Some photos couldn’t be read; the backup includes the rest.'); }
+    }
+    const ok = await saveFile('levelup-backup-' + E.dayKey(Date.now()) + '.json', JSON.stringify(out));
+    if (ok) { state.lastExport = Date.now(); save(); render(); toast('Backup saved.'); }
+  }
+  document.getElementById('importInput').addEventListener('change', async e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    let data;
+    try { data = JSON.parse(await file.text()); } catch (err) { toast('That file isn’t a Level Up backup: it isn’t valid JSON.'); return; }
+    if (!data || data.app !== 'levelup' || !E.validateState(data.state)) { toast('That file isn’t a Level Up backup, so nothing was changed.'); return; }
+    const n = data.state.events.length;
+    if (!(await confirmBox('Replace everything on this phone with the backup from ' + new Date(data.exportedAt).toLocaleDateString() + ' (' + n + ' entries)?', 'Replace', true))) return;
+    try {
+      if (data.photos) for (const k in data.photos) await photoPut(k, await dataURLToBlob(data.photos[k]));
+    } catch (err) { toast('Some photos couldn’t be restored; your entries were.'); }
+    state = hydrate(data.state);
+    state.lastExport = Date.parse(data.exportedAt) || 0;
+    state.seenLevel = 1e9; state.seenSkill = {};
+    comp = E.compute(state);
+    state.seenLevel = comp.level;
+    E.CATS.forEach(c => { state.seenSkill[c.id] = comp.cats[c.id].level; });
+    commit({ quiet: true });
+    toast('Backup restored.');
+  });
+
+  /* ---------- shared widgets ---------- */
+  function weekWidget() {
+    const xp = comp.thisWeek, max = E.TIERS[2].xp, nt = E.nextTier(xp);
+    return win([ic('calendar-days'), 'This week', h('span', { class: 'aside' }, 'Resets Monday')],
+      h('div', { class: 'week-num' }, fmt(xp), h('small', null, 'XP')),
+      h('div', { class: 'track' },
+        bar(Math.min(1, xp / max)),
+        E.TIERS.map(t => h('span', { class: 'mark' + (xp >= t.xp ? ' hit' : ''), style: `left: ${(t.xp / max) * 100}%` + (t.id === 'gold' ? '; transform: translateX(-3px)' : '') },
+          h('b', { style: t.id === 'gold' ? 'left:auto; right:0; transform:none' : '' }, t.name)))),
+      h('p', { class: 'small muted' }, (nt ? fmt(nt.xp - xp) + ' XP to ' + nt.name + '.' : 'Gold reached. Spend it wisely.') +
+        ' Tiers at ' + E.TIERS.map(t => fmt(t.xp)).join(', ') + ' XP.'));
+  }
+
+  /* ---------- views ---------- */
+  const views = {
+    character() {
+      const out = [];
+      if (restoredFromSnapshot) out.push(win(null, h('div', { class: 'banner' }, ic('triangle-alert'),
+        h('div', { class: 'grow small' }, 'Saved data was damaged, so the last good copy was loaded. Your most recent entry may be missing.'),
+        h('button', { class: 'btn', onclick: () => { restoredFromSnapshot = false; render(); } }, 'OK'))));
+      if (state.events.length && Date.now() - (state.lastExport || 0) > 7 * E.DAY) {
+        const days = state.lastExport ? Math.floor((Date.now() - state.lastExport) / E.DAY) + ' days ago' : 'never';
+        out.push(win(null, h('div', { class: 'banner' }, ic('hard-drive-download'),
+          h('div', { class: 'grow small' }, 'Last backup: ' + days + '. Clearing Safari’s data would erase your progress.'),
+          h('button', { class: 'btn gold', onclick: () => exportData(false) }, 'Back up'))));
+      }
+      out.push(win(null, h('div', { class: 'hero' },
+        h('div', { class: 'lv' }, h('small', null, 'Lv'), comp.level),
+        h('div', null,
+          h('div', { class: 'title' }, 'Lifetime ' + fmt(comp.total) + ' XP'),
+          bar(comp.into / comp.need),
+          h('div', { class: 'meta' }, h('span', null, fmt(comp.into) + ' / ' + fmt(comp.need)), h('span', null, 'Next: Lv ' + (comp.level + 1)))))));
+      out.push(weekWidget());
+
+      const dk = E.dayKey(Date.now());
+      const qids = state.quests[dk] || [];
+      const lib = E.allTasks(state);
+      const loggedToday = new Set(state.events.filter(e => e.type === 'task' && E.dayKey(e.ts) === dk).map(e => e.taskId));
+      out.push(win([ic('scroll'), 'Today’s quests', h('span', { class: 'aside' }, comp.questDone[dk] ? 'Cleared' : '+50 bonus')],
+        qids.map(id => {
+          const t = lib.find(x => x.id === id);
+          if (!t) return null;
+          const done = loggedToday.has(id);
+          return h('button', { class: 'taskbtn' + (done ? ' quest-done' : ''), onclick: function () { logTask(t, this); } },
+            catDot(t.cat), h('span', { class: 'grow name' }, t.name), done ? ic('check') : xpTag(t.xp));
+        }),
+        h('p', { class: 'small muted' }, comp.questDone[dk] ? 'All three done. +50 XP banked.' : 'Clear all three today for a 50 XP bonus.')));
+
+      out.push(win([ic('sparkles'), 'Skills'],
+        E.CATS.map(c => {
+          const s = comp.cats[c.id];
+          return h('div', { class: 'skill' },
+            catDot(c.id),
+            h('div', null, c.name, ' ', h('span', { class: 'lvl' }, 'Lv ' + s.level)),
+            h('span', { class: 'flame', title: 'Streak' }, s.streak ? [ic('flame'), ' ' + s.streak + 'd'] : h('span', { class: 'muted' }, 'No streak')),
+            bar(s.into / s.need, { thin: true, color: `var(--c-${c.id})` }));
+        }),
+        state.habits.length ? h('p', { class: 'small muted', style: 'margin-top:10px' }, ic('shield-check'), ' ',
+          comp.lastSlip ? 'Days since last slip: ' + Math.floor((Date.now() - comp.lastSlip) / E.DAY) : 'No slips logged yet.') : null));
+      return out;
+    },
+
+    log() {
+      const out = [];
+      E.CATS.forEach(c => {
+        const tasks = E.allTasks(state).filter(t => t.cat === c.id);
+        out.push(win([h('span', { style: `color: var(--c-${c.id})` }, ic(c.icon)), c.name, h('span', { class: 'aside' }, 'Lv ' + comp.cats[c.id].level)],
+          tasks.map(t => h('div', { class: 'row', style: 'padding:0' },
+            h('button', { class: 'taskbtn', onclick: function () { logTask(t, this); } }, h('span', { class: 'grow name' }, t.name), xpTag(t.xp)),
+            t.custom ? h('button', { class: 'btn ghost icon', 'aria-label': 'Delete ' + t.name, onclick: async () => {
+              if (await confirmBox('Delete the task “' + t.name + '”? Past entries keep their XP.', 'Delete', true)) {
+                state.customTasks = state.customTasks.filter(x => x.id !== t.id); commit({ quiet: true });
+              } } }, ic('trash-2')) : null))));
+      });
+      const name = h('input', { type: 'text', placeholder: 'e.g. Cold shower', maxlength: 60, 'aria-label': 'Task name' });
+      const cat = h('select', { 'aria-label': 'Category' }, E.CATS.map(c => h('option', { value: c.id }, c.name)));
+      const xp = h('input', { type: 'number', min: E.CUSTOM_MIN, max: E.CUSTOM_MAX, value: 15, inputmode: 'numeric', 'aria-label': 'XP' });
+      out.push(win([ic('plus'), 'Add your own task'],
+        h('p', { class: 'small muted' }, 'XP is kept between ' + E.CUSTOM_MIN + ' and ' + E.CUSTOM_MAX + ' so it stays in line with the rest.'),
+        h('div', { class: 'form three' },
+          h('div', { class: 'full' }, h('label', { class: 'lab' }, 'Task'), name),
+          h('div', { style: 'grid-column: span 2' }, h('label', { class: 'lab' }, 'Category'), cat),
+          h('div', null, h('label', { class: 'lab' }, 'XP'), xp),
+          h('button', { class: 'btn gold full', onclick: () => {
+            const n = name.value.trim();
+            if (!n) { name.focus(); toast('Give the task a name first.'); return; }
+            state.customTasks.push({ id: 'c-' + uid(), cat: cat.value, name: n, xp: E.clampCustomXp(xp.value), custom: true });
+            commit({ quiet: true });
+            toast('Added “' + n + '” to ' + catById[cat.value].name + '.');
+          } }, ic('plus'), 'Add task'))));
+      return out;
+    },
+
+    habits() {
+      const out = [];
+      const wk = E.weekKey(Date.now());
+      out.push(win([ic('shield-alert'), 'Bad habits'],
+        h('p', { class: 'small muted' }, 'Each slip costs 5 XP. Resisting earns nothing; that was your call, sir.'),
+        state.habits.length ? state.habits.map(hb => {
+          const n = state.events.filter(e => e.type === 'slip' && e.habitId === hb.id && E.weekKey(e.ts) === wk).length;
+          return h('div', { class: 'row' },
+            catDot(hb.cat),
+            h('div', { class: 'grow' }, h('div', { class: 'name' }, hb.name),
+              h('div', { class: 'small muted' }, (n ? n + ' slip' + (n > 1 ? 's' : '') + ' this week' : 'Clean this week') + (hb.cat ? ', hits ' + catById[hb.cat].name : ''))),
+            h('button', { class: 'btn red', onclick: () => slip(hb) }, 'Slipped'),
+            h('button', { class: 'btn ghost icon', 'aria-label': 'Delete ' + hb.name, onclick: async () => {
+              if (await confirmBox('Stop tracking “' + hb.name + '”? Past slips stay in your history.', 'Delete', true)) {
+                state.habits = state.habits.filter(x => x.id !== hb.id); commit({ quiet: true });
+              } } }, ic('trash-2')));
+        }) : h('p', null, 'No habits tracked yet. Add the first one below.')));
+      const name = h('input', { type: 'text', placeholder: 'e.g. Doomscrolling after midnight', maxlength: 60, 'aria-label': 'Habit name' });
+      const cat = h('select', { 'aria-label': 'Category it costs' }, h('option', { value: '' }, 'Overall only'), E.CATS.map(c => h('option', { value: c.id }, c.name)));
+      out.push(win([ic('plus'), 'Track a habit'],
+        h('div', { class: 'form' },
+          h('div', { class: 'full' }, h('label', { class: 'lab' }, 'Habit'), name),
+          h('div', null, h('label', { class: 'lab' }, 'Also costs XP in'), cat),
+          h('button', { class: 'btn gold', style: 'align-self:end', onclick: () => {
+            const n = name.value.trim();
+            if (!n) { name.focus(); toast('Name the habit first.'); return; }
+            state.habits.push({ id: 'h-' + uid(), name: n, cat: cat.value || null });
+            commit({ quiet: true });
+          } }, ic('plus'), 'Add'))));
+      return out;
+    },
+
+    rewards() {
+      const out = [weekWidget()];
+      const items = E.claimable(state, comp, Date.now());
+      out.push(win([ic('gift'), 'Ready to claim'],
+        items.length ? items.map(it => h('div', { class: 'row' },
+          h('div', { class: 'grow' }, h('div', { class: 'name' }, it.reward.name),
+            h('div', { class: 'small muted' }, h('span', { class: 'tag tier-' + it.reward.tier }, E.TIERS.find(t => t.id === it.reward.tier).name),
+              it.lastWeek ? ' Earned last week, expires Sunday night' : ' Earned this week')),
+          h('button', { class: 'btn gold', onclick: () => claim(it) }, 'Claim'))) :
+          h('p', null, (function () { const nt = E.nextTier(comp.thisWeek); return nt ? 'Nothing unlocked yet. ' + nt.name + ' needs ' + fmt(nt.xp) + ' XP this week.' : 'All claimed. Splendid restraint, or splendid excess.'; })())));
+      E.TIERS.forEach(t => {
+        const list = state.rewards.filter(r => r.tier === t.id);
+        const input = h('input', { type: 'text', placeholder: 'Add a ' + t.name.toLowerCase() + ' reward', maxlength: 60, 'aria-label': 'New ' + t.name + ' reward' });
+        const add = () => {
+          const n = input.value.trim();
+          if (!n) { input.focus(); return; }
+          state.rewards.push({ id: 'r-' + uid(), tier: t.id, name: n });
+          commit({ quiet: true });
+        };
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') add(); });
+        out.push(win([h('span', { class: 'tier-' + t.id, style: 'color: var(--c)' }, ic(t.id === 'gold' ? 'trophy' : 'medal')), t.name, h('span', { class: 'aside' }, fmt(t.xp) + ' XP / week')],
+          list.length ? list.map(r => h('div', { class: 'row' }, h('span', { class: 'grow name' }, r.name),
+            h('button', { class: 'btn ghost icon', 'aria-label': 'Delete ' + r.name, onclick: () => { state.rewards = state.rewards.filter(x => x.id !== r.id); commit({ quiet: true }); } }, ic('x'))))
+            : h('p', { class: 'small muted' }, 'No rewards in this tier yet.'),
+          h('div', { class: 'form' }, input, h('button', { class: 'btn', onclick: add, 'aria-label': 'Add reward' }, ic('plus')))));
+      });
+      out.push(h('p', { class: 'small', style: 'text-align:center; opacity:.7' }, 'Reaching a tier unlocks it and every tier below. Claiming never costs XP.'));
+      return out;
+    },
+
+    history() {
+      const out = [];
+      const rows = state.events.map(e => ({ ev: e, ts: e.ts }));
+      Object.keys(comp.questDone).forEach(dk => {
+        const ts = Math.max.apply(null, state.events.filter(e => e.type === 'task' && E.dayKey(e.ts) === dk).map(e => e.ts)) + 1;
+        rows.push({ quest: dk, ts });
+      });
+      rows.sort((a, b) => b.ts - a.ts);
+      const shown = rows.slice(0, historyLimit);
+      let lastDay = null;
+      const list = [];
+      shown.forEach(r => {
+        const dk = E.dayKey(r.ts);
+        if (dk !== lastDay) { list.push(h('div', { class: 'day' }, dayLabel(dk))); lastDay = dk; }
+        if (r.quest) {
+          list.push(h('div', { class: 'row' }, h('span', { class: 'cat-dot', style: '--c: var(--gold)' }, ic('scroll')),
+            h('div', { class: 'grow' }, 'Daily quests cleared'), xpTag(E.QUEST_BONUS)));
+          return;
+        }
+        const e = r.ev;
+        const icon = e.type === 'task' ? catDot(e.cat) : e.type === 'slip'
+          ? h('span', { class: 'cat-dot', style: '--c: var(--red)' }, ic('skull'))
+          : h('span', { class: 'cat-dot', style: '--c: var(--gold)' }, ic('gift'));
+        const label = e.type === 'claim' ? 'Claimed: ' + e.name : e.type === 'slip' ? 'Slipped: ' + e.name : e.name;
+        list.push(h('div', { class: 'row' }, icon,
+          h('div', { class: 'grow' }, h('div', { class: 'name' }, label), h('div', { class: 'small muted' }, timeLabel(e.ts))),
+          e.type === 'task' ? (e.photoId ? thumb(e) : h('button', { class: 'btn ghost icon', 'aria-label': 'Add photo to ' + e.name, onclick: () => pickPhoto(e.id) }, ic('camera'))) : null,
+          e.type !== 'claim' ? xpTag(comp.earned[e.id] || 0) : null,
+          h('button', { class: 'btn ghost icon', 'aria-label': 'Undo ' + label, onclick: () => undo(e.id) }, ic('undo-2'))));
+      });
+      out.push(win([ic('scroll-text'), 'History', h('span', { class: 'aside' }, fmt(state.events.length) + ' entries')],
+        list.length ? list : h('p', null, 'Nothing logged yet. Head to Log and earn your first XP.'),
+        rows.length > historyLimit ? h('div', { class: 'btns' }, h('button', { class: 'btn', onclick: () => { historyLimit += 120; render(); } }, 'Show older')) : null));
+
+      const got = E.ACHIEVEMENTS.filter(a => state.achievements[a.id]).length;
+      out.push(win([ic('trophy'), 'Achievements', h('span', { class: 'aside' }, got + ' of ' + E.ACHIEVEMENTS.length)],
+        h('div', { class: 'badges' }, E.ACHIEVEMENTS.map(a => {
+          const on = !!state.achievements[a.id];
+          return h('div', { class: 'badge' + (on ? '' : ' locked') }, h('div', { class: 'ico' }, ic(on ? a.icon : 'lock')),
+            h('div', { class: 'bn' }, a.name), h('div', { class: 'bd' }, a.desc));
+        }))));
+
+      const meter = h('p', { class: 'small muted' }, 'Checking storage…');
+      if (navigator.storage && navigator.storage.estimate) {
+        navigator.storage.estimate().then(s => {
+          const mb = x => (x / 1048576).toFixed(1) + ' MB';
+          meter.textContent = 'Using ' + mb(s.usage || 0) + (s.quota ? ' of about ' + mb(s.quota) : '') + ' on this phone. Photos: ' + comp.photos + '.';
+        }).catch(() => { meter.textContent = 'Photos stored: ' + comp.photos + '.'; });
+      } else meter.textContent = 'Photos stored: ' + comp.photos + '.';
+      out.push(win([ic('hard-drive-download'), 'Backup'],
+        h('p', { class: 'small' }, 'Last backup: ' + (state.lastExport ? new Date(state.lastExport).toLocaleDateString() : 'never') + '.'),
+        meter,
+        h('div', { class: 'btns' },
+          h('button', { class: 'btn gold', onclick: () => exportData(true) }, ic('download'), 'Export with photos'),
+          h('button', { class: 'btn', onclick: () => exportData(false) }, 'Export without photos'),
+          h('button', { class: 'btn', onclick: () => document.getElementById('importInput').click() }, ic('upload'), 'Import'))));
+
+      out.push(win([ic('info'), 'Credits'],
+        h('p', { class: 'small' }, 'Type: Press Start 2P by CodeMan38 and Share Tech Mono by Carrois Apostrophe, both under the SIL Open Font License.'),
+        h('p', { class: 'small' }, 'Icons: Lucide, ISC licence. No AI-generated art anywhere in this app.')));
+      return out;
+    }
+  };
+
+  /* ---------- render & routing ---------- */
+  function icons() { if (window.lucide && window.lucide.createIcons) { try { window.lucide.createIcons(); } catch (e) { /* icons optional */ } } }
+  function renderTabs() {
+    const box = document.getElementById('tabs');
+    box.replaceChildren(...VIEWS.map(v => h('button', { 'aria-current': v.id === view ? 'page' : null, onclick: () => go(v.id) }, ic(v.icon), v.name)));
+  }
+  function render() {
+    const today = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+    app.replaceChildren(
+      h('header', { class: 'topbar' }, h('h1', null, VIEWS.find(v => v.id === view).name), h('span', { class: 'date' }, today)),
+      ...views[view]());
+    renderTabs();
+    icons();
+  }
+  function go(id, fromHash) {
+    if (!views[id]) id = 'character';
+    const changed = id !== view;
+    view = id;
+    if (!fromHash) { try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; } }
+    render();
+    if (changed) window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', () => go(location.hash.slice(1), true));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (E.ensureQuests(state, Date.now())) save(); comp = E.compute(state); render(); } });
+
+  if (E.ensureQuests(state, Date.now())) save();
+  comp = E.compute(state);
+  E.checkAchievements(state, comp, Date.now());
+  go(location.hash.slice(1) || 'character', true);
+  if (!window.lucide) window.addEventListener('load', icons);
+
+  if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claude\.ai|claudeusercontent/.test(location.host)) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+})();
+</script>
+<script>
+/* Digital rain behind the windows. Drawn in code; pauses when hidden or when reduced motion is on. */
+(function () {
+  const c = document.getElementById('rain');
+  if (!c || !c.getContext || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const g = c.getContext('2d');
+  const glyphs = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
+  const fs = 16;
+  let w = 0, ht = 0, drops = [];
+  function size() {
+    const d = window.devicePixelRatio || 1;
+    w = innerWidth; ht = innerHeight;
+    c.width = w * d; c.height = ht * d;
+    g.setTransform(d, 0, 0, d, 0, 0);
+    drops = Array.from({ length: Math.ceil(w / fs) }, () => Math.random() * -60);
+  }
+  size();
+  addEventListener('resize', size);
+  let last = 0;
+  function frame(t) {
+    requestAnimationFrame(frame);
+    if (document.hidden || t - last < 75) return;
+    last = t;
+    g.fillStyle = 'rgba(0, 3, 0, 0.16)';
+    g.fillRect(0, 0, w, ht);
+    g.font = fs + 'px monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const y = drops[i] * fs;
+      g.fillStyle = Math.random() < 0.035 ? '#ff2a4d' : '#00ff66';
+      g.fillText(glyphs[(Math.random() * glyphs.length) | 0], i * fs, y);
+      if (y > ht && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
